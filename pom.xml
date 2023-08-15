@@ -8,7 +8,7 @@
 	<artifactId>todo-rest-api-h2</artifactId>
 	<version>1.0.0.RELEASE</version>
 	<packaging>jar</packaging>
-	<name>05-todo-rest-api-h2-containerized</name>
+	<name>todo-rest-api-h2-containerized</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,8 +20,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<docker.image.prefix>prefix</docker.image.prefix>
-		<docker.image.name>springboot-docker-h2-azure-deployment</docker.image.name>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -85,42 +83,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
+			
+			<!-- Docker -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>2.6.0</version>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.10</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<!-- <goal>push</goal> --> 
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<to>
-						<image>registry.hub.docker.com/snehasishguharoy/spring-boot-h2-azure-docker-image-example</image>
-					</to>
+					<repository>snehasishguharoy/${project.artifactId}</repository>
+					<tag>${project.version}</tag>
+					<skipDockerInfo>true</skipDockerInfo>
 				</configuration>
 			</plugin>
-
-			<!-- Docker -->
-<!--			<plugin>-->
-<!--				<groupId>com.spotify</groupId>-->
-<!--				<artifactId>dockerfile-maven-plugin</artifactId>-->
-<!--				<version>1.4.10</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>default</id>-->
-<!--						<goals>-->
-<!--							<goal>build</goal>-->
-<!--							&lt;!&ndash; <goal>push</goal> &ndash;&gt; -->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--				<configuration>-->
-<!--					<repository>snehasishguharoy/${project.artifactId}</repository>-->
-<!--					<tag>${project.version}</tag>-->
-<!--					<skipDockerInfo>true</skipDockerInfo>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
 		</plugins>
 	</build>
 
